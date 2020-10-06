@@ -1,1 +1,4 @@
 # E-PiInfoDisplay
+
+## EARLY DEVELOPMENT
+*NOT READY*
