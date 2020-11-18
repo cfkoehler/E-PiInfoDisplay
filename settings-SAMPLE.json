@@ -1,0 +1,19 @@
+{
+    "basic": {
+        "refresh_sec": 300,
+        "night_start": "",
+        "night_end": ""
+    },
+    "weather": {
+        "api_key": "",
+        "city_lat": 00.000,
+        "city_lon": 00.000,
+        "units": "imperial"
+    },
+    "covid": {
+        "state": "NY"
+    },
+    "todoist": {
+        "API": ""
+    }
+}
