@@ -18,6 +18,7 @@ import calendar
 import classSpaceLaunchNow as  rocket
 from openWeather import openWeather
 from covidData import covidData
+from classStocks import stockData
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
@@ -89,6 +90,10 @@ def refreshDisplay(settings):
     covidCurrent = covid.currentData()
     covidState = covid.currentStateData()
     covidDate = datetime.datetime.strptime(str(covidCurrent[0]['date']), '%Y%m%d')
+    stock = stockData(settings['stocks']['tickers'])
+    stockCurrent = stock.returnData()
+    stockList = settings['stocks']['tickers'].split()
+
 
     #Set up display
     epd = epd7in5.EPD()
@@ -100,7 +105,7 @@ def refreshDisplay(settings):
     draw = ImageDraw.Draw(Himage)
     draw.line((320, 0, 320, 384), fill = 0) #center line
     draw.line((10, 110, 310, 110), fill = 0) #Line under time/date
-    draw.line((10, 335, 310, 335), fill = 0) #Line above roket lauch
+    draw.line((10, 300, 310, 300), fill = 0) #Line above roket lauch
     draw.line((330, 165, 630, 165), fill = 0) #Line bellow Weather
     draw.line((330, 280, 630, 280), fill = 0) #Line bellow COVID
     
@@ -121,12 +126,16 @@ def refreshDisplay(settings):
 
     #Rocket Launches
     launches = rocket.getSpaceLaunchs()
-    draw.text((5, 340), stringShort(launches[0][0],40), font = font14, fill = 0)
-    draw.text((5, 355), stringShort(launches[1][0],40), font = font14, fill = 0)
-    draw.text((5, 370), stringShort(launches[2][0],40), font = font14, fill = 0)
-    draw.text((220, 340), str(launches[0][1].month) + "/" + str(launches[0][1].day) + " " + str(launches[0][1].time()), font = font14, fill = 0)
-    draw.text((220, 355), str(launches[1][1].month) + "/" + str(launches[1][1].day) + " " + str(launches[1][1].time()), font = font14, fill = 0)
-    draw.text((220, 370), str(launches[2][1].month) + "/" + str(launches[2][1].day) + " " + str(launches[2][1].time()), font = font14, fill = 0)
+    draw.text((5, 310), stringShort(launches[0][0],40), font = font14, fill = 0)
+    draw.text((5, 325), stringShort(launches[1][0],40), font = font14, fill = 0)
+    draw.text((5, 340), stringShort(launches[2][0],40), font = font14, fill = 0)
+    draw.text((5, 355), stringShort(launches[3][0],40), font = font14, fill = 0)
+    draw.text((5, 370), stringShort(launches[4][0],40), font = font14, fill = 0)
+    draw.text((220, 310), str(launches[0][1].month) + "/" + str(launches[0][1].day) + " " + str(launches[0][1].time()), font = font14, fill = 0)
+    draw.text((220, 325), str(launches[1][1].month) + "/" + str(launches[1][1].day) + " " + str(launches[1][1].time()), font = font14, fill = 0)
+    draw.text((220, 340), str(launches[2][1].month) + "/" + str(launches[2][1].day) + " " + str(launches[2][1].time()), font = font14, fill = 0)
+    draw.text((220, 355), str(launches[3][1].month) + "/" + str(launches[3][1].day) + " " + str(launches[3][1].time()), font = font14, fill = 0)
+    draw.text((220, 370), str(launches[4][1].month) + "/" + str(launches[4][1].day) + " " + str(launches[4][1].time()), font = font14, fill = 0)
 
     #COVID DATA
     draw.text((325, 165), "US COVID as of: " + str(covidDate.month) + "/" + str(covidDate.day), font = font30, fill = 0)
@@ -138,6 +147,14 @@ def refreshDisplay(settings):
     draw.text((480, 220), "Case Increase: " + format(covidState['positiveIncrease']), font = font14, fill = 0)
     draw.text((480, 240), "Death Increase: " + format(covidState['deathIncrease']), font = font14, fill = 0)
     
+    #Stock Data
+    draw.text((350, 280), "Current Stock Price", font = font24, fill = 0)
+    draw.text((325, 310), stockList[0] + " Current: " + str(stockCurrent.tickers[0].info["bid"]) + "  Start: " + str(stockCurrent.tickers[0].info["open"]), font = font14, fill = 0)
+    draw.text((325, 325), stockList[1] + " Current: " + str(stockCurrent.tickers[1].info["bid"]) + "  Start: " + str(stockCurrent.tickers[1].info["open"]), font = font14, fill = 0)
+    draw.text((325, 340), stockList[2] + " Current: " + str(stockCurrent.tickers[2].info["bid"]) + "  Start: " + str(stockCurrent.tickers[2].info["open"]), font = font14, fill = 0)
+    draw.text((325, 355), stockList[3] + " Current: " + str(stockCurrent.tickers[3].info["bid"]) + "  Start: " + str(stockCurrent.tickers[3].info["open"]), font = font14, fill = 0)
+    draw.text((325, 370), stockList[4] + " Current: " + str(stockCurrent.tickers[4].info["bid"]) + "  Start: " + str(stockCurrent.tickers[4].info["open"]), font = font14, fill = 0)
+
     epd.Clear()
     logging.info("Writing Image to Display")
     epd.display(epd.getbuffer(Himage))

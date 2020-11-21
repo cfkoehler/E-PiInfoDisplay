@@ -15,5 +15,8 @@
     },
     "todoist": {
         "API": ""
+    },
+    "stocks": {
+        "tickers": "MSFT GE AAPL TSLA GRMN TWTR"
     }
 }
