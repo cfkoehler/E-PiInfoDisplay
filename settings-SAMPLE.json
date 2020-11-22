@@ -1,0 +1,23 @@
+{
+    "basic": {
+        "refresh_sec": 300,
+        "night_start": "21",
+        "night_end": "06"
+    },
+    "weather": {
+        "api_key": "",
+        "city_lat": 00.000,
+        "city_lon": 00.000,
+        "units": "imperial"
+    },
+    "covid": {
+        "state": "NY"
+    },
+    "todoist": {
+        "email": "",
+        "password": ""
+    },
+    "stocks": {
+        "tickers": "MSFT GE AAPL TSLA GRMN TWTR"
+    }
+}
