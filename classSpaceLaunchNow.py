@@ -1,6 +1,7 @@
 import requests
 import json
 import datetime as dt
+from dateutil import tz
 
 
 def getSpaceLaunchs():
@@ -8,14 +9,14 @@ def getSpaceLaunchs():
     results = jsonRaw['results']
     reported = []
 
-    #for each of the first 5 results get name, launch date, country/agency
+    #for each of the first 10 results get name, launch date, country/agency
     for x in range(10):
-        #print(jsonRaw['results'][x]['name'])
-        #print(jsonRaw['results'][x]['window_start'])
-        #print[jsonRaw['results'][x]['pad']['location']['country_code']]
         name = jsonRaw['results'][x]['name']
         date = jsonRaw['results'][x]['net']
         date = dt.datetime.strptime(date, '%Y-%m-%dT%H:%M:%S%z')
+        # Convert date to local
+        #date = date.replace(tzinfo=tz.gettz('UTC'))
+        date = date.astimezone(tz.tzlocal())
         reported.append([name, date])
 
     return(reported)
