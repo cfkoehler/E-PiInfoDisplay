@@ -1,5 +1,7 @@
 # E-Pi Information Display
 
+*<u>Readme instructions are not complete</u>*
+
 #### Basic information display for E-ink monitor attached to pi zero w
 
 ##### Information Display:
@@ -57,6 +59,3 @@
    ```bash
    python3 info.py
    ```
-
-   
-
