@@ -1,7 +1,6 @@
 import sys
 import os
 import json
-import requests
 
 picdir = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'pic')
 libdir = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'lib')
@@ -13,12 +12,12 @@ from waveshare_epd import epd7in5
 import time
 import datetime
 from PIL import Image,ImageDraw,ImageFont
-import traceback
 import calendar
 import classSpaceLaunchNow as  rocket
 from openWeather import openWeather
 from covidData import covidData
 from classStocks import stockData
+from classTodoist import tasks
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
@@ -52,11 +51,6 @@ def getDayModifyer(day):
         3: "rd",
     }
     return switcher.get(day, "th")
-
-def getInternetSpeed():
-    mycursor = mydb.cursor()
-    mycursor.execute("SELECT * FROM internetSpeed ORDER BY time DESC LIMIT 1")
-    myresult = mycursor.fetchall()
 
 def stringShort(letters, length):
     if len(letters) <= length:
@@ -93,6 +87,8 @@ def refreshDisplay(settings):
     stock = stockData(settings['stocks']['tickers'])
     stockCurrent = stock.returnData()
     stockList = settings['stocks']['tickers'].split()
+    taskCall = tasks(settings['todoist']['email'], settings['todoist']['password'])
+    taskList = taskCall.taskList
 
 
     #Set up display
@@ -155,13 +151,20 @@ def refreshDisplay(settings):
     draw.text((325, 355), stockList[3] + " Current: " + str(stockCurrent.tickers[3].info["bid"]) + "  Start: " + str(stockCurrent.tickers[3].info["open"]), font = font14, fill = 0)
     draw.text((325, 370), stockList[4] + " Current: " + str(stockCurrent.tickers[4].info["bid"]) + "  Start: " + str(stockCurrent.tickers[4].info["open"]), font = font14, fill = 0)
 
+
+    #Task List
+    draw.text((50, 115), "Upcoming Tasks", font = font24, fill = 0)
+    xPx = 145
+    for i in range(0,10):
+        draw.text((5, xPx), stringShort(taskList[i][0],120), font = font14, fill = 0)
+        draw.text((225, xPx), stringShort(taskList[i][1],10), font = font14, fill = 0)
+        xPx = xPx + 15
+
     epd.Clear()
     logging.info("Writing Image to Display")
     epd.display(epd.getbuffer(Himage))
     logging.info("Display Sleep")
     epd.sleep()
-
-    
 
 
 
@@ -170,10 +173,27 @@ def main():
         #Get settings
         with open("settings.json", 'r') as f:
             settings = json.load(f)
+        nightStartVal = settings['basic']['night_start']
+        nightEndVal = settings['basic']['night_end']
+        nightStart = int(nightStartVal[0:2])
+        nightEnd = int(nightEndVal[0:2])
 
         startTime = time.time()
         while True:
-            refreshDisplay(settings)
+            sleep = False
+            currentTime = datetime.datetime.now()
+            if int(currentTime.hour) < nightStart and int(currentTime.hour) > nightEnd:
+                sleep = False
+                logging.info("Script Refresh")
+                refreshDisplay(settings)
+            else:
+                logging.info("Script Night Mode")
+                if sleep != True:
+                    epd = epd7in5.EPD()
+                    epd.init()
+                    epd.Clear()
+                    sleep = True
+            
             logging.info("Script Sleep")
             sleepTime = settings['basic']['refresh_sec']
             time.sleep(sleepTime - ((time.time() - startTime) % sleepTime))

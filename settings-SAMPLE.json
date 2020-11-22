@@ -1,8 +1,8 @@
 {
     "basic": {
         "refresh_sec": 300,
-        "night_start": "",
-        "night_end": ""
+        "night_start": "21",
+        "night_end": "06"
     },
     "weather": {
         "api_key": "",
@@ -14,7 +14,8 @@
         "state": "NY"
     },
     "todoist": {
-        "API": ""
+        "email": "",
+        "password": ""
     },
     "stocks": {
         "tickers": "MSFT GE AAPL TSLA GRMN TWTR"
