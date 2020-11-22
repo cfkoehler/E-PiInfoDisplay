@@ -1,5 +1,9 @@
 # E-Pi Information Display
 
+<img src="D:\Documents\Personal Software Development\GitHub\E-PiInfoDisplay\Display.jpg" alt="Display" style="zoom:50%;" />
+
+
+
 *<u>Readme instructions are not complete</u>*
 
 #### Basic information display for E-ink monitor attached to pi zero w
@@ -59,3 +63,6 @@
    ```bash
    python3 info.py
    ```
+
+   
+
