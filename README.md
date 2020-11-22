@@ -1,6 +1,6 @@
 # E-Pi Information Display
 
-<img src="D:\Documents\Personal Software Development\GitHub\E-PiInfoDisplay\Display.jpg" alt="Display" style="zoom:50%;" />
+<img src="Display.jpg" alt="Display Demo Image" style="zoom:50%;" />
 
 
 
