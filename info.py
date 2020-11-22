@@ -122,16 +122,16 @@ def refreshDisplay(settings):
 
     #Rocket Launches
     launches = rocket.getSpaceLaunchs()
-    draw.text((5, 310), stringShort(launches[0][0],40), font = font14, fill = 0)
-    draw.text((5, 325), stringShort(launches[1][0],40), font = font14, fill = 0)
-    draw.text((5, 340), stringShort(launches[2][0],40), font = font14, fill = 0)
-    draw.text((5, 355), stringShort(launches[3][0],40), font = font14, fill = 0)
-    draw.text((5, 370), stringShort(launches[4][0],40), font = font14, fill = 0)
-    draw.text((220, 310), str(launches[0][1].month) + "/" + str(launches[0][1].day) + " " + str(launches[0][1].time()), font = font14, fill = 0)
-    draw.text((220, 325), str(launches[1][1].month) + "/" + str(launches[1][1].day) + " " + str(launches[1][1].time()), font = font14, fill = 0)
-    draw.text((220, 340), str(launches[2][1].month) + "/" + str(launches[2][1].day) + " " + str(launches[2][1].time()), font = font14, fill = 0)
-    draw.text((220, 355), str(launches[3][1].month) + "/" + str(launches[3][1].day) + " " + str(launches[3][1].time()), font = font14, fill = 0)
-    draw.text((220, 370), str(launches[4][1].month) + "/" + str(launches[4][1].day) + " " + str(launches[4][1].time()), font = font14, fill = 0)
+    draw.text((5, 305), stringShort(launches[0][0],30), font = font14, fill = 0)
+    draw.text((5, 320), stringShort(launches[1][0],30), font = font14, fill = 0)
+    draw.text((5, 335), stringShort(launches[2][0],30), font = font14, fill = 0)
+    draw.text((5, 350), stringShort(launches[3][0],30), font = font14, fill = 0)
+    draw.text((5, 365), stringShort(launches[4][0],30), font = font14, fill = 0)
+    draw.text((220, 305), str(launches[0][1].month) + "/" + str(launches[0][1].day) + " " + str(launches[0][1].time()), font = font14, fill = 0)
+    draw.text((220, 320), str(launches[1][1].month) + "/" + str(launches[1][1].day) + " " + str(launches[1][1].time()), font = font14, fill = 0)
+    draw.text((220, 335), str(launches[2][1].month) + "/" + str(launches[2][1].day) + " " + str(launches[2][1].time()), font = font14, fill = 0)
+    draw.text((220, 350), str(launches[3][1].month) + "/" + str(launches[3][1].day) + " " + str(launches[3][1].time()), font = font14, fill = 0)
+    draw.text((220, 365), str(launches[4][1].month) + "/" + str(launches[4][1].day) + " " + str(launches[4][1].time()), font = font14, fill = 0)
 
     #COVID DATA
     draw.text((325, 165), "US COVID as of: " + str(covidDate.month) + "/" + str(covidDate.day), font = font30, fill = 0)
@@ -153,11 +153,11 @@ def refreshDisplay(settings):
 
 
     #Task List
-    draw.text((50, 115), "Upcoming Tasks", font = font24, fill = 0)
-    xPx = 145
+    draw.text((50, 110), "Upcoming Tasks", font = font24, fill = 0)
+    xPx = 135
     for i in range(0,10):
         draw.text((5, xPx), stringShort(taskList[i][0],120), font = font14, fill = 0)
-        draw.text((225, xPx), stringShort(taskList[i][1],10), font = font14, fill = 0)
+        draw.text((235, xPx), stringShort(taskList[i][1],10), font = font14, fill = 0)
         xPx = xPx + 15
 
     epd.Clear()
@@ -165,7 +165,6 @@ def refreshDisplay(settings):
     epd.display(epd.getbuffer(Himage))
     logging.info("Display Sleep")
     epd.sleep()
-
 
 
 def main():
