@@ -79,6 +79,8 @@ def refreshDisplay(settings):
     now = datetime.datetime.now()
     weather = openWeather(settings['weather']['api_key'], settings['weather']['city_lat'], settings['weather']['city_lon'], "imperial")
     currentWeather = weather.current()
+    sunrise = datetime.datetime.fromtimestamp(currentWeather['sunrise'])
+    sunset = datetime.datetime.fromtimestamp(currentWeather['sunset'])
     dailyWeather = weather.dailyForcast()
     covid = covidData(settings['covid']['state'])
     covidCurrent = covid.currentData()
@@ -100,15 +102,16 @@ def refreshDisplay(settings):
     Himage = Image.new('1', (epd.width, epd.height), 255)  # 255: clear the frame
     draw = ImageDraw.Draw(Himage)
     draw.line((320, 0, 320, 384), fill = 0) #center line
-    draw.line((10, 110, 310, 110), fill = 0) #Line under time/date
-    draw.line((10, 300, 310, 300), fill = 0) #Line above roket lauch
+    draw.line((10, 90, 310, 90), fill = 0) #Line under time/date
+    draw.line((10, 280, 310, 280), fill = 0) #Line above roket lauch
     draw.line((330, 165, 630, 165), fill = 0) #Line bellow Weather
     draw.line((330, 280, 630, 280), fill = 0) #Line bellow COVID
     
     #Date and time
-    #draw.text((5, 1), now(sunrise.time()) , font = font14, fill = 0)
-    draw.text((50, 1), padTime(now.hour) + ":" + padTime(now.minute), font = font80, fill = 0)
-    draw.text((10, 75), calendar.day_name[now.weekday()] +  " " + getMonthName(now.month)  + " " + str(now.day) + getDayModifyer(now.day), font = font24, fill = 0)
+    draw.text((10, 1), "Refreshed: " + padTime(now.hour) + ":" + padTime(now.minute), font = font24, fill = 0)
+    draw.text((10, 25), calendar.day_name[now.weekday()] +  " " + getMonthName(now.month)  + " " + str(now.day) + getDayModifyer(now.day), font = font24, fill = 0)
+    draw.text((10, 45), "Sunrise: " + padTime(sunrise.hour) + ":" + padTime(sunrise.minute), font = font24, fill = 0)
+    draw.text((10, 65), "Sunset: " + padTime(sunset.hour) + ":" + padTime(sunset.minute), font = font24, fill = 0)
 
     #Weather
     draw.text((325, 1), str(round(currentWeather['temp'])) + u"\u00b0", font = font80, fill = 0)
@@ -122,6 +125,7 @@ def refreshDisplay(settings):
 
     #Rocket Launches
     launches = rocket.getSpaceLaunchs()
+    draw.text((50, 280), "Rocket Launches", font = font24, fill = 0)
     draw.text((5, 305), stringShort(launches[0][0],30), font = font14, fill = 0)
     draw.text((5, 320), stringShort(launches[1][0],30), font = font14, fill = 0)
     draw.text((5, 335), stringShort(launches[2][0],30), font = font14, fill = 0)
@@ -153,8 +157,8 @@ def refreshDisplay(settings):
 
 
     #Task List
-    draw.text((50, 110), "Upcoming Tasks", font = font24, fill = 0)
-    xPx = 135
+    draw.text((50, 92), "Upcoming Tasks", font = font24, fill = 0)
+    xPx = 123
     for i in range(0,10):
         draw.text((5, xPx), stringShort(taskList[i][0],120), font = font14, fill = 0)
         draw.text((235, xPx), stringShort(taskList[i][1],10), font = font14, fill = 0)
