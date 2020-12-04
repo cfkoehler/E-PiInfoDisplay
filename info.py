@@ -181,25 +181,20 @@ def main():
         nightStart = int(nightStartVal[0:2])
         nightEnd = int(nightEndVal[0:2])
 
-        startTime = time.time()
-        while True:
+        sleep = False
+        currentTime = datetime.datetime.now()
+        if int(currentTime.hour) < nightStart and int(currentTime.hour) > nightEnd:
             sleep = False
-            currentTime = datetime.datetime.now()
-            if int(currentTime.hour) < nightStart and int(currentTime.hour) > nightEnd:
-                sleep = False
-                logging.info("Script Refresh")
-                refreshDisplay(settings)
-            else:
-                logging.info("Script Night Mode")
-                if sleep != True:
-                    epd = epd7in5.EPD()
-                    epd.init()
-                    epd.Clear()
-                    sleep = True
-            
-            logging.info("Script Sleep")
-            sleepTime = settings['basic']['refresh_sec']
-            time.sleep(sleepTime - ((time.time() - startTime) % sleepTime))
+            logging.info("Script Refresh")
+            refreshDisplay(settings)
+        else:
+            logging.info("Script Night Mode")
+            if sleep != True:
+                epd = epd7in5.EPD()
+                epd.init()
+                epd.Clear()
+                sleep = True
+        
     except IOError as e:
         logging.info(e)
         

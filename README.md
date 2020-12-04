@@ -66,3 +66,6 @@
 
    
 
+#### Refresh with crontab
+
+Using cron on the raspberry pi we can call the script at pre determined increments.

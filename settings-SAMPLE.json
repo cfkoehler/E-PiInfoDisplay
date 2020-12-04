@@ -1,6 +1,5 @@
 {
     "basic": {
-        "refresh_sec": 300,
         "night_start": "21",
         "night_end": "06"
     },
