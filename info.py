@@ -11,7 +11,7 @@ import logging
 from waveshare_epd import epd7in5
 import time
 import datetime
-from PIL import Image,ImageDraw,ImageFont
+from PIL import Image,ImageDraw,ImageFont, ImageOps
 import calendar
 import classSpaceLaunchNow as  rocket
 from openWeather import openWeather
@@ -157,16 +157,30 @@ def refreshDisplay(settings):
 
 
     #Task List
+         
     draw.text((50, 92), "Upcoming Tasks", font = font24, fill = 0)
     xPx = 123
-    for i in range(0,10):
+    amount = len(taskList)
+    if amount > 10:
+        amount = 10
+
+    for i in range(0,amount):
         draw.text((5, xPx), stringShort(taskList[i][0],120), font = font14, fill = 0)
         draw.text((235, xPx), stringShort(taskList[i][1],10), font = font14, fill = 0)
-        xPx = xPx + 15
+        xPx = xPx + 15 
+    
 
     epd.Clear()
     logging.info("Writing Image to Display")
-    epd.display(epd.getbuffer(Himage))
+    if settings['basic']['invert'] == "true":
+        Himage = Himage.convert('L')
+        inverted_image = ImageOps.invert(Himage)
+        inverted_image = inverted_image.convert('1')
+        epd.display(epd.getbuffer(inverted_image))
+    else:
+        epd.display(epd.getbuffer(Himage))
+    
+    
     logging.info("Display Sleep")
     epd.sleep()
 
