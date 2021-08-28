@@ -23,11 +23,10 @@ class tasks:
         #For each task put into 2d array with task and date
         for item in response['items']:
             name = item['content']
-            if item['due'] is None:
-                break
-            due = item['due']['date']
-            singleTask = [name, due]
-            tasks.append(singleTask)
+            if item['due'] is not None:
+                due = item['due']['date']
+                singleTask = [name, due]
+                tasks.append(singleTask)
     
         # sort
         tasks = self.sortTasks(tasks)
