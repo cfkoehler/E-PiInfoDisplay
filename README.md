@@ -45,6 +45,9 @@
    2. ```bash
       pip3 install todoist-python
       ```
+   3. ```bash
+      pip3 install xmltodict
+      ```
 
 3. Rename settings-SAMPLE.json to settings.json
 
@@ -66,3 +69,6 @@
 
    
 
+#### Refresh with crontab
+
+Using cron on the raspberry pi we can call the script at pre determined increments.
