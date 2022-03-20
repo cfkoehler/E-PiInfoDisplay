@@ -6,8 +6,10 @@ from dateutil import tz
 
 def getSpaceLaunchs():
     jsonRaw = getData()
-    results = jsonRaw['results']
     reported = []
+    
+    if len(jsonRaw) == 0:
+        return(reported)
 
     #for each of the first 10 results get name, launch date, country/agency
     for x in range(10):
@@ -24,10 +26,11 @@ def getSpaceLaunchs():
     
 
 def getData(): 
-    response = requests.get("https://spacelaunchnow.me/api/3.3.0/launch/upcoming/?format=json")
-    response.raise_for_status()
-    json = response.json()
-    return json
+    try:
+        response = requests.get("https://spacelaunchnow.me/api/3.3.0/launch/upcoming/?format=json")
+        response.raise_for_status()
+        json = response.json()
+        return json
+    except:
+        return []
 
-def processData():
-    return null

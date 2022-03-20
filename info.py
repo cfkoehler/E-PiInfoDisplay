@@ -2,6 +2,7 @@ import sys
 import os
 import json
 import socket
+from textwrap import shorten
 
 picdir = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'pic')
 libdir = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'lib')
@@ -18,7 +19,7 @@ from openWeather import openWeather
 from covidData import covidData
 from classStocks import stockData
 from classTodoist import tasks
-from classF1Stats import f1Data
+import classF1Stats as f1Data
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
@@ -109,6 +110,7 @@ def refreshDisplay(settings):
     draw.text((325, 1), str(round(currentWeather['temp'])) + u"\u00b0", font = font80, fill = 0)
     draw.text((410, 45), stringShort(currentWeather['weather'][0]['description'],18), font = font30, fill = 0)
     draw.text((450, 10), "Low: " + str(round(dailyWeather[0][3]['min'])) + " High: " + str(round(dailyWeather[0][3]['max'])), font = font24, fill = 0)
+
     #Daily Weather
     draw.text((325, 80), calendar.day_name[dailyWeather[1][0].weekday()] + ": " + dailyWeather[1][6] + " (" + str(round(dailyWeather[1][3]['min'])) + u"\u00b0" + ")", font = font18, fill = 0)
     draw.text((325, 100), calendar.day_name[dailyWeather[2][0].weekday()] + ": " + dailyWeather[2][6] + " (" + str(round(dailyWeather[2][3]['min'])) + u"\u00b0" + ")", font = font18, fill = 0)
@@ -117,30 +119,39 @@ def refreshDisplay(settings):
 
     #Rocket Launches
     launches = rocket.getSpaceLaunchs()
-    draw.text((50, 280), "Rocket Launches", font = font24, fill = 0)
-    draw.text((5, 305), stringShort(launches[0][0],30), font = font14, fill = 0)
-    draw.text((5, 320), stringShort(launches[1][0],30), font = font14, fill = 0)
-    draw.text((5, 335), stringShort(launches[2][0],30), font = font14, fill = 0)
-    draw.text((5, 350), stringShort(launches[3][0],30), font = font14, fill = 0)
-    draw.text((5, 365), stringShort(launches[4][0],30), font = font14, fill = 0)
-    draw.text((220, 305), str(launches[0][1].month) + "/" + str(launches[0][1].day) + " " + str(launches[0][1].time()), font = font14, fill = 0)
-    draw.text((220, 320), str(launches[1][1].month) + "/" + str(launches[1][1].day) + " " + str(launches[1][1].time()), font = font14, fill = 0)
-    draw.text((220, 335), str(launches[2][1].month) + "/" + str(launches[2][1].day) + " " + str(launches[2][1].time()), font = font14, fill = 0)
-    draw.text((220, 350), str(launches[3][1].month) + "/" + str(launches[3][1].day) + " " + str(launches[3][1].time()), font = font14, fill = 0)
-    draw.text((220, 365), str(launches[4][1].month) + "/" + str(launches[4][1].day) + " " + str(launches[4][1].time()), font = font14, fill = 0)
+    if len(launches) > 1:
+        draw.text((50, 280), "Rocket Launches", font = font24, fill = 0)
+        draw.text((5, 305), stringShort(launches[0][0],30), font = font14, fill = 0)
+        draw.text((5, 320), stringShort(launches[1][0],30), font = font14, fill = 0)
+        draw.text((5, 335), stringShort(launches[2][0],30), font = font14, fill = 0)
+        draw.text((5, 350), stringShort(launches[3][0],30), font = font14, fill = 0)
+        draw.text((5, 365), stringShort(launches[4][0],30), font = font14, fill = 0)
+        draw.text((220, 305), str(launches[0][1].month) + "/" + str(launches[0][1].day) + " " + str(launches[0][1].time()), font = font14, fill = 0)
+        draw.text((220, 320), str(launches[1][1].month) + "/" + str(launches[1][1].day) + " " + str(launches[1][1].time()), font = font14, fill = 0)
+        draw.text((220, 335), str(launches[2][1].month) + "/" + str(launches[2][1].day) + " " + str(launches[2][1].time()), font = font14, fill = 0)
+        draw.text((220, 350), str(launches[3][1].month) + "/" + str(launches[3][1].day) + " " + str(launches[3][1].time()), font = font14, fill = 0)
+        draw.text((220, 365), str(launches[4][1].month) + "/" + str(launches[4][1].day) + " " + str(launches[4][1].time()), font = font14, fill = 0)
+    else:
+        draw.text((40, 300), "Error Requesting", font = font24, fill = 0)
+        draw.text((40, 340), "Rocket Launches", font = font24, fill = 0)
+
 
     #F1 Data
     f1 = f1Data.getChampionship()
-    draw.text((325, 165), "Current F1 Standings", font = font30, fill = 0)
-    draw.text((325, 195), "Points", font = font14, fill = 0)
-    draw.text((370, 195), "Racer", font = font14, fill = 0)
-    draw.text((450, 195), "Team", font = font14, fill = 0)
+    nextRace = f1Data.getNextRace()
+    draw.text((325, 162), "Current F1 Standings", font = font30, fill = 0)
+    draw.text((325, 192), "Points", font = font14, fill = 0)
+    draw.text((370, 192), "Racer", font = font14, fill = 0)
+    draw.text((450, 192), "Team", font = font14, fill = 0)
     xPx = 210
     for i in range(1,11):
         draw.text((325, xPx), f1[str(i)].get('points'), font = font14, fill = 0)
         draw.text((370, xPx), f1[str(i)].get('name'), font = font14, fill = 0)
         draw.text((450, xPx), f1[str(i)].get('team'), font = font14, fill = 0)
         xPx = xPx + 15
+    draw.text((520, 195), "NEXT RACE:", font = font14, fill = 0)
+    draw.text((520, 210), stringShort(nextRace['name'], 20), font = font14, fill = 0)
+    draw.text((535, 225), stringShort(nextRace['date'], 20), font = font14, fill = 0)
 
     #Task List         
     draw.text((50, 92), "Upcoming Tasks", font = font24, fill = 0)
