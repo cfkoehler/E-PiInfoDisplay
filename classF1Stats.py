@@ -39,7 +39,7 @@ def getNextRace():
     #For each race check if it is the next one 
     for race in season:
         date = datetime.strptime(season[race]['date'], '%Y-%m-%d')
-        if date >= todays_date:
+        if date == todays_date or date > todays_date:
             return(season[race])
         else:
             return {}
