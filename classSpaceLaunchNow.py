@@ -27,7 +27,9 @@ def getSpaceLaunchs():
 
 def getData(): 
     try:
-        response = requests.get("https://spacelaunchnow.me/api/3.3.0/launch/upcoming/?format=json")
+        url = "https://spacelaunchnow.me/api/3.3.0/launch/upcoming/?format=json"
+        headers = {'User-Agent': 'My User Agent 1.0'}
+        response = requests.get(url, headers=headers)
         response.raise_for_status()
         json = response.json()
         return json
