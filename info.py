@@ -119,12 +119,13 @@ def refreshDisplay(settings):
               ":" + padTime(sunset.minute), font=font24, fill=0)
 
     # Weather
-    draw.text((325, 1), str(
-        round(currentWeather['temp'])) + u"\u00b0", font=font80, fill=0)
-    draw.text((410, 45), stringShort(
-        currentWeather['weather'][0]['description'], 18), font=font30, fill=0)
-    draw.text((450, 10), "Low: " + str(round(dailyWeather[0][3]['min'])) + " High: " + str(
+    draw.text((320, 1), str(
+        round(currentWeather['feels_like'])) + u"\u00b0", font=font80, fill=0)
+    draw.text((430, 45), stringShort(
+        currentWeather['weather'][0]['description'], 18), font=font24, fill=0)
+    draw.text((450, 5), "Low: " + str(round(dailyWeather[0][3]['min'])) + " High: " + str(
         round(dailyWeather[0][3]['max'])), font=font24, fill=0)
+    draw.text((480,30), "Hum: " + str(round(currentWeather['humidity'])), font=font18, fill=0)
 
     # Daily Weather
     draw.text((325, 80), calendar.day_name[dailyWeather[1][0].weekday()] + ": " + dailyWeather[1]
