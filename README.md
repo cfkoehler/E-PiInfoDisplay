@@ -60,6 +60,7 @@
    2. Add current state to COVID setting
    3. Add login credentials to Todoist
    4. Add 5 stock ticker symbols
+   5. Count down events
 
 5. Start script: 
 

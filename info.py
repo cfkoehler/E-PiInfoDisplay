@@ -91,9 +91,9 @@ def refreshDisplay(settings):
     sunrise = datetime.datetime.fromtimestamp(currentWeather['sunrise'])
     sunset = datetime.datetime.fromtimestamp(currentWeather['sunset'])
     dailyWeather = weather.dailyForcast()
-    taskCall = tasks(settings['todoist']['email'],
-                     settings['todoist']['password'])
-    taskList = taskCall.taskList
+#    taskCall = tasks(settings['todoist']['email'],
+#                     settings['todoist']['password'])
+#    taskList = taskCall.taskList
 
     # Set up display
     epd = epd7in5.EPD()
@@ -185,19 +185,38 @@ def refreshDisplay(settings):
         draw.text((535, 225), stringShort(
             nextRace['date'], 20), font=font14, fill=0)
 
-    # Task List
-    draw.text((50, 92), "Upcoming Tasks", font=font24, fill=0)
+    # Countdowns
+    draw.text((50, 92), "Countdowns", font=font24, fill=0)
     xPx = 123
-    amount = len(taskList)
-    if amount > 10:
-        amount = 10
+    event_count = len(settings["countdowns"]["events"])
+    events = settings["countdowns"]["events"]
+    today = datetime.date.today()
+    if event_count > 0:
+        for i in range(0, event_count):
+            date = datetime.datetime.strptime(events[i]["date"], '%Y-%m-%d').date()
+            diff = date - today
+            draw.text((5, xPx), stringShort(
+                events[i]["name"], 40), font=font14, fill=0)
+            draw.text((150, xPx), stringShort(
+                events[i]["date"], 10), font=font14, fill=0)
+            draw.text((240, xPx), stringShort(
+                str(diff.days) + ' days', 10), font=font14, fill=0)
+            xPx = xPx + 15
 
-    for i in range(0, amount):
-        draw.text((5, xPx), stringShort(
-            taskList[i][0], 80), font=font14, fill=0)
-        draw.text((235, xPx), stringShort(
-            taskList[i][1], 10), font=font14, fill=0)
-        xPx = xPx + 15
+    # Task List
+
+    #draw.text((50, 92), "Upcoming Tasks", font=font24, fill=0)
+#    xPx = 123
+#    amount = len(taskList)
+#    if amount > 10:
+#        amount = 10
+
+#    for i in range(0, amount):
+#        draw.text((5, xPx), stringShort(
+#            taskList[i][0], 80), font=font14, fill=0)
+#        draw.text((235, xPx), stringShort(
+#            taskList[i][1], 10), font=font14, fill=0)
+#        xPx = xPx + 15
 
     epd.Clear()
     logging.info("Writing Image to Display")

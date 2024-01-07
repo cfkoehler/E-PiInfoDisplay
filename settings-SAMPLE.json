@@ -12,5 +12,17 @@
     "todoist": {
         "email": "",
         "password": ""
+    },
+    "countdowns": {
+        "events": [
+            {
+                "name": "Event 1",
+                "date": "2024-12-15"
+            },
+            {
+                "name": "Event 2",
+                "date": "2024-09-15"
+            }
+        ]
     }
 }
